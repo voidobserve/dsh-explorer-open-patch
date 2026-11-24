@@ -1,0 +1,7 @@
+# apply-patch.ps1 打补丁前自动生成的原版备份（与 original-client.js 同源，不入库）
+original-client.*.js
+
+# 本地临时文件
+*.tmp
+*.bak
+*.log

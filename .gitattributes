@@ -1,0 +1,5 @@
+# 本仓库归档的是“逐字节还原”用的文件：
+#   - patched-client.js 会被 apply-patch.ps1 原样复制进插件目录
+#   - original-client.js 必须与上游 0.1.6 的 client.js 完全一致（SHA-256 校验）
+# 因此关闭 Git 的换行/文本归一化，保证 clone 下来与提交时字节相同。
+* -text
