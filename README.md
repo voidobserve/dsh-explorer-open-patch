@@ -11,7 +11,9 @@
 **本仓库不是上游的 fork**，只存放补丁、脚本和文档。
 
 - 适用插件：`@reed-io/dsh-explorer-open` **0.1.6**
-- 验证环境：DeepSeek Harness **0.2.2-rc.3**（desktop profile，Windows 11）
+- 平台：**Windows 10** Education 22H2（build 19045）
+- 验证环境：DeepSeek Harness **0.2.2-rc.5**（desktop profile）＋ Windows PowerShell 5.1
+- 完成方式：在 **DeepSeek Harness** 里用 **`deepseek-v4.1-flash-1017`** 模型编写
 - 协议：MIT
 
 ## 为什么要它
@@ -120,21 +122,21 @@ powershell -File apply-patch.ps1 -Revert
 
 ## 已知限制
 
-- 只在 Windows + DSH Desktop 上验证；所用快照字段属于客户端内部 API，DSH 大版本升级后可能失效
-  （有兜底，不会报错，只是退回「新建」）。
+- 只在 Windows 10（22H2 / 19045）+ DSH Desktop 上验证，没有在 Windows 11 上测过；所用快照字段属于
+  客户端内部 API，DSH 大版本升级后可能失效（有兜底，不会报错，只是退回「新建」）。
 - 只验证到插件 0.1.6；上游改版后需要按上面的「锚点丢失」流程合并。
 - 补丁按 profile 生效；多 profile 各装一份时要各打一次（`-ProfileDir`）。
 - 如果组策略禁用了 Windows Script Host，`launch.vbs` 跑不起来——`apply-patch.ps1` 的 `-Revert`
   可以退回原版命令（会闪窗口，但至少能用）。
-- Win11 **新式精简菜单**走的是 MSIX 里的原生组件，不经过这条命令，本补丁不覆盖它；目前它需要
-  先信任自签证书，未启用时经典菜单是唯一入口。
+- Windows 10 只有经典右键菜单，没有新式精简菜单；到了 Windows 11，那条路走的是 MSIX 里的原生组件，
+  不经过这条命令，本补丁不覆盖它（而且它需要先信任自签证书）。
 
 ## 关于本仓库
 
-本仓库的补丁代码、PowerShell 脚本和文档，是在 **DeepSeek Harness（DSH）** 的会话里编写完成的：
-由 DSH 中的编码代理读取已安装插件的源码、定位被补丁的代码段、生成补丁与脚本，并在本机
-DSH 0.2.2-rc.3 + 插件 0.1.6 上逐项验证。落库前的改动经人工复核；脚本按 Windows PowerShell 5.1
-的实际行为调整过（`.ps1` 带 UTF-8 BOM，无 BOM 会被按 GBK 解码）。
+本仓库的补丁代码、PowerShell 脚本和文档，是在 **DeepSeek Harness（DSH）** 里用
+**`deepseek-v4.1-flash-1017`** 模型完成的：模型读取已安装插件的源码、定位被补丁的代码段、生成
+补丁与脚本，并在本机 Windows 10 + DSH 0.2.2-rc.5 + 插件 0.1.6 上逐项验证。落库前的改动经人工复核；
+脚本按 Windows PowerShell 5.1 的实际行为调整过（`.ps1` 带 UTF-8 BOM，无 BOM 会被按 GBK 解码）。
 
 「不闪窗口」这处补丁是用 Win32 接口实测过的：同样参数下，直接启动 `powershell.exe` 会留下一个
 可见的控制台窗口，经 `wscript` + `SW_HIDE` 启动则没有窗口。
