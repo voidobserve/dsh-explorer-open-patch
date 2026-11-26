@@ -5,7 +5,7 @@
 #      → 脚本用临时 npmrc（npmmirror 直连）覆盖，不改你的全局配置。
 #   2. dsh-diff-review 只存在于 GitHub、不在任何 npm registry，pnpm 重新解析它会 404
 #      → 脚本先备份它的模块目录、临时从 package.json 摘除，装完原样还原。
-#   3. 装完/升完后 client.js 会变回原版 → 脚本最后自动调用 apply-patch.ps1 重打补丁。
+#   3. 装完/升完后 client.js 和 lib/registry.js 都会变回原版 → 脚本最后自动调用 apply-patch.ps1 重打补丁。
 #
 # 用法:
 #   powershell -File install-plugin.ps1                          # 装/升级 explorer-open 到最新
@@ -124,7 +124,7 @@ if ($bundles -notcontains $Name) {
 $patchCode = $LASTEXITCODE
 if ($patchCode -eq 3) {
   Write-Host ''
-  Write-Host '[WARN] 插件大改了 handle()，需要人工合并补丁（见 apply-patch.ps1 输出的步骤）'
+  Write-Host '[WARN] 插件大改了补丁锚点所在的代码，需要人工合并补丁（见 apply-patch.ps1 输出的步骤）'
 }
 Write-Host ''
 Write-Host '完成。重启 DeepSeek Harness 并刷新页面后生效。'
